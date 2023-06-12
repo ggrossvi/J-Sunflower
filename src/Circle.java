@@ -93,7 +93,7 @@ public class Circle{
     /**
      * Sets the centerY of the circle 
      *
-     * @param     centerX    sets the centerY of the circle  
+     * @param     centerY    sets the centerY of the circle
      */
     public void setCenterY(double centerY) {
         this.centerY = centerY;
@@ -140,7 +140,8 @@ public class Circle{
      *            x             the value of x
      */
     static double cartesianXToGraphics(int drawWidth, double x) {
-        double xGraphics = (drawWidth/2) + x; 
+
+        double xGraphics =(drawWidth/2 + x);
         return xGraphics;
     }
     
@@ -151,16 +152,10 @@ public class Circle{
      *            y             the value of y
      */
     static double cartesianYToGraphics(int drawWidth, double y) {
-        double yGraphics = (drawWidth/2) -y;
+        double yGraphics =  drawWidth/2 - y;
         return yGraphics;
     }
     
     //move main to an outside main class
-    public static void main(String[] args) {
-        // drawing size,radius,petal count 400,100,9
-        Sunflower sunflower = new Sunflower(400,100,9);
-        sunflower.draw();
-        
-        
-    }
+
 }

@@ -1,5 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Sunflower sunflower = new Sunflower(400,100,9);
+        sunflower.draw();
     }
 }

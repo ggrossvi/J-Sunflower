@@ -12,25 +12,25 @@ public class Sunflower
     private Color COLOR_PETALS = new Color(252,206,1);
     
     private int drawingSize;                         
-    private int centerRadius;
+    private int radius;
     private int petalCount;
 
     /**
      * 
      * Constructor for objects of class Sunflower
      */
-    public Sunflower(int drawingSize, int centerRadius, int petalCount) {
+    public Sunflower(int drawingSize, int radius, int petalCount) {
         // add preconditions  
         this.drawingSize = drawingSize;
-        this.centerRadius = centerRadius;
+        this.radius = radius;
         this.petalCount = petalCount;
     }
 
     /**
-     * An example of a method - replace this comment with your own
      *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
+     *
+     * Draws Sunflower
+     *
      */
     public void draw() {
        
@@ -40,11 +40,10 @@ public class Sunflower
         Graphics graphics = panel.getGraphics();
         panel.setBackground(sky);
         
-        int xCenter = -centerRadius;//(drawingSize/2) - 1; // 200 -1 = 199
-        int yCenter = centerRadius;//(drawingSize/2) - 1; 
-        Circle sunflowerCenterCircle = new Circle(COLOR_CENTER,xCenter,yCenter,100);
+        // the radius added and subtracted is to adjust for the left handed rectangle point
+        Circle sunflowerCenterCircle = new Circle(COLOR_CENTER,0-radius,0+radius,radius);
         graphics.setColor(COLOR_CENTER);
-        sunflowerCenterCircle.draw(graphics,400);
+        sunflowerCenterCircle.draw(graphics,drawingSize);
         sleepHalfSecond();
         graphics.setColor(COLOR_PETALS);
         //Circle[] petal = new Circle[petalCount];
@@ -52,21 +51,25 @@ public class Sunflower
         
         for (int numPetals = 0; numPetals < petalCount; numPetals ++) {
             
-            // centerRadius/2 at the end of line for x and y may not be right.
 
-            double x = centerRadius*(Math.cos(numPetals*radiansDividedByPetalCount))-centerRadius/2; // * centerRadius to scale it +centerRadius/2
-            double y = centerRadius*(Math.sin(numPetals*radiansDividedByPetalCount))+centerRadius/2;
-//            double x = centerRadius*(Math.cos(radiansDividedByPetalCount*numPetals))-centerRadius/2; // * centerRadius to scale it +centerRadius/2
-//            double y = centerRadius*(Math.sin(radiansDividedByPetalCount*numPetals))+centerRadius/2; // * numPetals to keep rotating it around the unit circle
-            Circle petal = new Circle(COLOR_PETALS,x,y,centerRadius/2);
+            int scale2Radii = radius+(radius/2);
+            // 1.5 creates consistent point(center of petal) from which to draw the left corner of square
+            int scale1Radius= (int) (radius * 1.5);
+
+            double y= (Math.sin(numPetals * radiansDividedByPetalCount)); // * numPetals to keep rotating it around the unit circle
+//            double x = centerRadius*(Math.cos(numPetals*radiansDividedByPetalCount))*centerRadius; // * centerRadius to scale it +centerRadius/2
+//            double y = centerRadius*(Math.sin(numPetals*radiansDividedByPetalCount))*(centerRadius+centerRadius/2);
+
+            double x =  (Math.cos(numPetals*radiansDividedByPetalCount));
+            double xScaled = scale1Radius * x ; // * radius to scale it +centerRadius/2 on Y to get the y coordinates for height
+            double yScaled = scale1Radius * y ;
+            double xTransposed = xScaled - radius/2;
+            double yTransposed = yScaled + radius/2;// is positive because it is flipped in cartesian
+
+            Circle petal = new Circle(COLOR_PETALS,xTransposed,yTransposed,radius/2);
             petal.draw(graphics,drawingSize);
             sleepHalfSecond();
             petal.toString();
-            /*
-            petal[numPetals] = new Circle(COLOR_PETALS,x, y,centerRadius/2);
-            petal[numPetals].draw(graphics,drawingSize);
-            petal[numPetals].toString();
-            */
         }
     }
     
@@ -76,11 +79,10 @@ public class Sunflower
         } catch (Exception e) {
             System.out.println("Something went wrong.");
         } finally {
-            System.out.println("The 'try catch' is finished.");
+            System.out.println("The 'try catch' is finished. No exception happened!");
         }
-        
-        
     }
+
     
     /*
      * 
